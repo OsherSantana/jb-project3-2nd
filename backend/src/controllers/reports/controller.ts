@@ -1,41 +1,45 @@
-import { NextFunction, Request, RequestHandler, Response } from "express";
-import { StatusCodes } from "http-status-codes";
-import sequelize from "../../db/sequelize";
+import { Request, Response, NextFunction } from "express";
 import Vacation from "../../models/vacation";
-import User from "../../models/user";
 import VacationTag from "../../models/tag";
+import sequelize from "../../db/sequelize";
+import { literal, fn, col } from "sequelize";
+import User from "../../models/user";
+import { StatusCodes } from "http-status-codes";
 import AppError from "../../errors/app-error";
 import { Parser } from "json2csv";
 
-// Get statistics on tagged vacations for admins
+
+
 export async function getTagStats(req: Request, res: Response, next: NextFunction) {
     try {
-        // Get all vacations with their tag counts
-        const vacations = await Vacation.findAll({
+        const results = await Vacation.findAll({
             attributes: [
-                'id',
-                'destination',
-                'startDate',
-                'endDate',
-                'price',
-                'imageFileName',
-                [sequelize.fn('COUNT', sequelize.col('taggedByUsers.id')), 'tagCount']
+                "destination",
+                [sequelize.fn("COUNT", sequelize.col("taggedByUsers.id")), "followers"]
             ],
-            include: [{
-                model: User,
-                as: 'taggedByUsers',
-                attributes: [],
-                through: { attributes: [] }
-            }],
-            group: ['Vacation.id'],
-            order: [[sequelize.literal('tagCount'), 'DESC']]
+            include: [
+                {
+                    model: User,
+                    as: "taggedByUsers",
+                    attributes: [],
+                    through: { attributes: [] }
+                }
+            ],
+            group: ["Vacation.id"]
         });
 
-        res.json(vacations);
-    } catch (e) {
-        next(e);
+        res.json(
+            results.map((v) => ({
+                destination: v.getDataValue("destination"),
+                followers: Number(v.getDataValue("followers"))
+            }))
+        );
+    } catch (err) {
+        console.error("🔥 Error in getTagStats:", err); // 👈 add this line
+        res.status(500).json({ error: true, message: "Server error", detail: err instanceof Error ? err.message : err });
     }
 }
+
 
 // Get detailed report on who is tagging specific vacations
 export async function getVacationTagDetails(req: Request<{ id: string }>, res: Response, next: NextFunction) {

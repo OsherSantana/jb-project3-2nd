@@ -8,6 +8,7 @@ COPY ./package*.json ./
 RUN npm install
 
 COPY ./ ./
+COPY ./uploads ./uploads
 
 # this will create a "dist" folder on the image, with all the .js files
 RUN npm run build

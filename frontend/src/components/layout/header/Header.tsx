@@ -1,34 +1,42 @@
-import { NavLink } from 'react-router-dom'
-import './Header.css'
-import useUsername from '../../../hooks/useUsername'
-import { useContext } from 'react'
-import { AuthContext } from '../../auth/auth/Auth'
+import { NavLink, useNavigate } from 'react-router-dom';
+import './Header.css';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import { logout } from '../../../redux/authSlice';
 
 export default function Header() {
-
-    const name = useUsername()
-
-    const { logout } = useContext(AuthContext)!
+    const user = useAppSelector((state) => state.auth.user);
+    const isAdmin = user?.role === 'admin';
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     function logMeOut() {
-        logout()
+        dispatch(logout());
+        navigate("/login");
     }
 
     return (
-        <div className='Header'>
-            <div>
-                Logo
-            </div>  
+        <div className="Header">
+            <div className="logo-container">
+                <NavLink to="/home">
+                    <img src="/VacationSystemLogo.png" alt="Vacation System" className="logo" />
+                </NavLink>
+            </div>
+
             <div>
                 <nav>
-                    <NavLink to="/profile">profile</NavLink>
-                    <NavLink to="/feed">feed</NavLink>
-                    <NavLink to="/search">search</NavLink>
+                    <NavLink to="/home">Home</NavLink>
+                    {isAdmin &&
+                        <>
+                            <NavLink to="/admin/add-vacation">Add Vacation</NavLink>
+                            <NavLink to="/admin/reports">Reports</NavLink>
+                        </>
+                    }
                 </nav>
-            </div>          
+            </div>
+
             <div>
-                Hello {name} | <button onClick={logMeOut}>logout</button>
+                Hello {user?.firstName} {user?.lastName} | <button onClick={logMeOut}>logout</button>
             </div>
         </div>
-    )
+    );
 }

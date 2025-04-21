@@ -12,6 +12,8 @@ import reportsRouter from "./routers/reports";
 import errorLogger from "./middlewares/error/error-logger";
 import errorResponder from "./middlewares/error/error-responder";
 import notFound from "./middlewares/not-found";
+import usersRouter from "./routers/users";
+
 
 const port = config.get<string>('app.port');
 const name = config.get<string>('app.name');
@@ -29,10 +31,10 @@ const app = express();
         app.use(json()); // Parse JSON request bodies
         app.use(fileUpload()); // Handle file uploads
 
-        // Serve static files from uploads directory
         app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
         // API Routes
+        app.use("/users", usersRouter);
         app.use('/auth', authRouter);
         app.use('/vacations', vacationsRouter);
         app.use('/tags', tagsRouter);

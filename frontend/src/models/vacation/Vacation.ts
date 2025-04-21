@@ -3,9 +3,8 @@ import User from "../user/User";
 
 export default interface Vacation {
     id: string;
-    title: string;
-    body: string;
     destination: string;
+    description: string;
     startDate: string;
     endDate: string;
     price: number;
@@ -16,4 +15,6 @@ export default interface Vacation {
     isDraft?: boolean;
     user: User;
     tags: Tag[];
+    isTagged?: boolean;
+    taggedByUsers?: { id: string }[];
 }

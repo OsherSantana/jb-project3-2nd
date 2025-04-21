@@ -17,7 +17,7 @@ type NewVacationForm = {
 };
 
 export default function NewVacation(): JSX.Element {
-  const { register, handleSubmit, formState: { errors } } = useForm<NewVacationForm>();
+  const { register, handleSubmit } = useForm<NewVacationForm>();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const service = useService(UserVacationsService);
@@ -30,7 +30,6 @@ export default function NewVacation(): JSX.Element {
     formData.append("startDate", data.startDate);
     formData.append("endDate", data.endDate);
     formData.append("price", data.price.toString());
-    formData.append("isDraft", data.isDraft ? "true" : "false");
 
     if (data.imageFile?.[0]) {
       formData.append("image", data.imageFile[0]);
@@ -66,11 +65,6 @@ export default function NewVacation(): JSX.Element {
         />
 
         <input type="file" {...register("imageFile")} />
-
-        <label>
-          <input type="checkbox" {...register("isDraft")} />
-          Save as draft
-        </label>
 
         <button type="submit">Add Vacation</button>
       </form>

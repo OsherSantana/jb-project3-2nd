@@ -23,7 +23,7 @@ import fileUploader from "../middlewares/file-uploader";
 const router = Router();
 
 // Public routes
-router.get('/', getAllVacations);
+router.get('/', enforceAuth, getAllVacations);
 router.get('/:id', paramsValidation(vacationIdParamValidator), getVacationById);
 
 // Admin-only routes
@@ -55,5 +55,4 @@ router.delete(
     paramsValidation(vacationIdParamValidator),
     deleteVacation
 );
-
 export default router;

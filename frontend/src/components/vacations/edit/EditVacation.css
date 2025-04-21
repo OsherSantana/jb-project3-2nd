@@ -1,14 +1,8 @@
-.EditPost {
-    border: 1px dashed lightgreen;
-    padding: 4px;
-    margin: 4px;
-}
-
-.EditPost > form {
-    display: flex;
-    flex-direction: column;
-}
-
-.EditPost .error {
-    color: red;
-}
+.EditVacation {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+  

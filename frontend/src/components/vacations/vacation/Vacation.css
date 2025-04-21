@@ -1,13 +1,12 @@
-.Post {
-    display: flex;
-    flex-direction: column;
-    border: 1px dashed lightgreen;
-    box-shadow: 2px;
-    padding: 4px;
-    margin: 8px;
-    border-radius: 4px;
+.VacationCard {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
-.Post img {
-    width: 300px;
+.VacationCard>img {
+  width: 200px;
 }

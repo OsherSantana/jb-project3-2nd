@@ -5,6 +5,7 @@ import useService from "../../../hooks/useService";
 import UserVacationsService from "../../../services/auth-aware/UserVacations";
 import VacationCard from "../vacation/Vacation";
 
+
 export default function UserVacations(): JSX.Element {
   const vacations = useAppSelector(state => state.vacationProfile.vacations);
   const dispatch = useAppDispatch();
@@ -24,6 +25,7 @@ export default function UserVacations(): JSX.Element {
 
   return (
     <div className="UserVacations">
+      <p>test</p>
       {vacations.map(vacation => (
         <VacationCard
           key={vacation.id}

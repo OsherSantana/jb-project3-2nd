@@ -1,5 +1,4 @@
 import Vacation from "../../models/vacation/Vacation";
-import VacationDraft from "../../models/vacation/VacationDraft";
 import AuthAware from "./AuthAware";
 
 export default class UserVacations extends AuthAware {
@@ -9,6 +8,14 @@ export default class UserVacations extends AuthAware {
         );
         return response.data;
     }
+
+    async getAllVacations(): Promise<Vacation[]> {
+        const response = await this.axiosInstance.get<Vacation[]>(
+            `${import.meta.env.VITE_REST_SERVER_URL}/vacations`
+        );
+        return response.data;
+    }
+
 
     async addVacation(formData: FormData): Promise<Vacation> {
         const response = await this.axiosInstance.post<Vacation>(

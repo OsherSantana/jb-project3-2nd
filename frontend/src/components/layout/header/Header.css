@@ -1,15 +1,33 @@
 .Header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #2b2b2b;
+  padding: 10px 20px;
+  color: white;
 }
 
-.Header nav {
-    display: flex;
-    flex-direction: row;
-    gap: 6px;
+.logo {
+  height: 50px;
 }
 
-.Header .active {
-    color: green;
+nav a {
+  color: white;
+  margin: 0 10px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+nav a.active {
+  border-bottom: 2px solid white;
+}
+
+button {
+  background-color: transparent;
+  border: none;
+  color: white;
+}
+
+button:hover {
+  text-decoration: underline;
 }

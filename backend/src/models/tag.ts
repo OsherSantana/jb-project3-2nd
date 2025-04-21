@@ -1,5 +1,6 @@
 import {
     AllowNull,
+    BelongsTo,
     Column,
     CreatedAt,
     DataType,
@@ -37,4 +38,7 @@ export default class VacationTag extends Model {
 
     @UpdatedAt
     updatedAt: Date;
+
+    @BelongsTo(() => Vacation)
+    vacation: Vacation;
 }

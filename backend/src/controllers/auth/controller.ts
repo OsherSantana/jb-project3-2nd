@@ -1,13 +1,13 @@
 // backend/controllers/auth/controller.ts
 import { NextFunction, Request, Response } from "express";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import config from 'config';
 import { StatusCodes } from "http-status-codes";
 import User from "../../models/user";
 import AppError from "../../errors/app-error";
 
-// Hash passwords with bcrypt to match the sample data
+// Hash passwords with bcryptjs to match the sample data
 async function hashPassword(password: string): Promise<string> {
     const salt = await bcrypt.genSalt(10);
     return bcrypt.hash(password, salt);
@@ -21,15 +21,15 @@ export async function login(
     try {
         const { email, password } = req.body;
         const user = await User.findOne({
-            where: { email }
+            where: { email },
+            include: ["followedVacations"]
+
         });
 
-        // Add this check
         if (!user) {
             return next(new AppError(StatusCodes.UNAUTHORIZED, 'Invalid email or password'));
         }
 
-        // Add password verification
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
             return next(new AppError(StatusCodes.UNAUTHORIZED, 'Invalid email or password'));
@@ -52,7 +52,6 @@ export async function signup(
 ) {
     const { firstName, lastName, email, password } = req.body;
     try {
-        // Default role is 'user', admin role is assigned manually by existing admins
         const hashedPassword = await hashPassword(password);
 
         const user = await User.create({
@@ -64,7 +63,7 @@ export async function signup(
         });
 
         const userData = user.get({ plain: true });
-        delete userData.password; // Don't include password in token
+        delete userData.password;
 
         const jwt = sign(userData, config.get<string>('app.jwtSecret'));
         res.status(StatusCodes.CREATED).json({ jwt, user: userData });
@@ -91,7 +90,7 @@ export async function getProfile(req: Request, res: Response, next: NextFunction
         }
 
         const userData = user.get({ plain: true });
-        delete userData.password; // Don't include password
+        delete userData.password;
 
         res.json(userData);
     } catch (e) {

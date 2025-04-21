@@ -1,17 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { userFollowingSlice } from "./userFollowingSlice";
-import { vacationProfileSlice } from "./vacationProfileSlice";
+import authReducer from "./authSlice";
 import vacationFeedReducer from "./vacationFeedSlice";
+import vacationProfileReducer from "./vacationProfileSlice";
+import userFollowingReducer from "./userFollowingSlice";
 
 const store = configureStore({
-    reducer: {
-        userFollowing: userFollowingSlice.reducer,
-        vacationProfile: vacationProfileSlice.reducer,
-        vacationFeed: vacationFeedReducer
-    }
+  reducer: {
+    auth: authReducer, 
+    vacationFeed: vacationFeedReducer,
+    vacationProfile: vacationProfileReducer,
+    userFollowing: userFollowingReducer,
+  },
 });
-
-export default store;
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+export default store;

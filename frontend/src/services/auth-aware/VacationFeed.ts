@@ -6,6 +6,7 @@ export default class VacationFeed extends AuthAware {
         page?: number;
         followedOnly?: boolean;
         activeOnly?: boolean;
+        upcomingOnly?: boolean;
         destination?: string;
     }): Promise<Vacation[]> {
         const queryParams = new URLSearchParams();
@@ -13,6 +14,7 @@ export default class VacationFeed extends AuthAware {
         if (filters.page) queryParams.append("page", filters.page.toString());
         if (filters.followedOnly) queryParams.append("followedOnly", "true");
         if (filters.activeOnly) queryParams.append("activeOnly", "true");
+        if (filters.upcomingOnly) queryParams.append("upcomingOnly", "true");
         if (filters.destination) queryParams.append("destination", filters.destination);
 
         const response = await this.axiosInstance.get<Vacation[]>(

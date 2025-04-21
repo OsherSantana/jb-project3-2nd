@@ -45,6 +45,10 @@ export default class Vacation extends Model {
     @Column(DataType.STRING)
     imageFileName: string;
 
-    @BelongsToMany(() => User, () => VacationTag)
+    @BelongsToMany(() => User, {
+        through: () => VacationTag,
+        as: "taggedByUsers",
+    })
     taggedByUsers: User[];
+
 }

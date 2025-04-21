@@ -23,12 +23,12 @@ export default class TaggedVacations extends AuthAware {
         return response.data;
     }
 
-
-    async follow(id: string): Promise<void> {
-        await this.axiosInstance.post(`${import.meta.env.VITE_REST_SERVER_URL}/follow/${id}`);
+    async follow(vacationId: string): Promise<void> {
+        await this.axiosInstance.post(`/tags/tag/${vacationId}`);
     }
 
-    async unfollow(id: string): Promise<void> {
-        await this.axiosInstance.delete(`${import.meta.env.VITE_REST_SERVER_URL}/follow/${id}`);
+    async unfollow(vacationId: string): Promise<void> {
+        await this.axiosInstance.delete(`/tags/untag/${vacationId}`);
     }
+
 }
